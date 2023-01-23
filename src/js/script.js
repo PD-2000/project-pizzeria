@@ -1,5 +1,4 @@
-// global Handlebars, utils, dataSource
-// eslint-disable-line no-unused-vars
+/* global Handlebars, utils, dataSource */ // eslint-disable-line no-unused-vars
 {
 	'use strict';
 
@@ -94,17 +93,18 @@
 				const activeProduct = document.querySelector(select.all.menuProductsActive);
 
 				// if there is active product and it's not thisProduct.element, remove active class from it
-				if(activeProduct && activeProduct !== thisProduct.element)
+				if(activeProduct !== null && activeProduct !== thisProduct.element)
 					activeProduct.classList.remove('active');
 
 				// toggle active class on thisProduct.element
-				thisProduct.element.toggle('active');
+				if(activeProduct === thisProduct.element)
+					thisProduct.element.toggle('active');
 			});
 		}
 	}
 
 	const app = {
-		initMenu: function(){
+		initMenu(){
 			const thisApp = this;
 
 			console.log('thisApp.data:', thisApp.data);
