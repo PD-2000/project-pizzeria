@@ -150,6 +150,9 @@
 					// if there is a param with a name of paramId in formData and if it includes optionId
 					const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
+					// find option's image
+					const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+
 					// if an option has been selected...
 					if(optionSelected){
 						// if this option is not default...
@@ -157,25 +160,19 @@
 							// ...add option's price to price variable
 							price += option.price;
 						}
+						// if this option has it's own image...
+						if(optionImage){
+							// ...add 'active' class to option's image
+							optionImage.classList.add(classNames.menuProduct.imageVisible);
+						}
 					}else{
 						// if this option is default...
 						if(option.default){
 							// ...reduce price variable
 							price -= option.price;
 						}
-					}
-
-					// find option's image
-					const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
-
-					// if an option has it's own image...
-					if(optionImage){
-						// if an option has been selected...
-						if(optionSelected){
-							// ...add 'active' class to option's image
-							optionImage.classList.add(classNames.menuProduct.imageVisible);
-						}
-						else{
+						// if this option has it's own image...
+						if(optionImage){
 							// ...remove 'active' class from option's image
 							optionImage.classList.remove(classNames.menuProduct.imageVisible);
 						}
