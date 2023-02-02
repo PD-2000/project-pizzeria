@@ -241,22 +241,18 @@
 							// ...add option's price to price variable
 							price += option.price;
 						}
-						// if this option has it's own image...
-						if(optionImage){
-							// ...add 'active' class to option's image
-							optionImage.classList.add(classNames.menuProduct.imageVisible);
-						}
 					}else{
 						// if this option is default...
 						if(option.default){
 							// ...reduce price variable
 							price -= option.price;
 						}
-						// if this option has it's own image...
-						if(optionImage){
-							// ...remove 'active' class from option's image
-							optionImage.classList.remove(classNames.menuProduct.imageVisible);
-						}
+					}
+
+					//if this option has it's own image...
+					if(optionImage){
+						// ...add/remove 'active' class from this option's image
+						optionImage.classList[optionSelected ? 'add' : 'remove'](classNames.menuProduct.imageVisible);
 					}
 				}
 			}
