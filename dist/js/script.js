@@ -193,7 +193,7 @@
 
 				params[paramId] = {
 					label: param.label,
-					options: {}
+					options: []
 				};
 
 				for(let optionId in param.options){
@@ -201,7 +201,7 @@
 					const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
 
 					if(optionSelected){
-						params[paramId].options[optionId] += option.label;
+						params[paramId].options.push(option.label);
 					}
 				}
 			}
