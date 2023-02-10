@@ -394,7 +394,7 @@
 				thisCart.totalPrice = thisCart.subtotalPrice + deliveryFee;
 			
 			
-			thisCart.dom.totalNumber.innerHTML = '$' + thisCart.totalNumber;
+			thisCart.dom.totalNumber.innerHTML = thisCart.totalNumber;
 			thisCart.dom.subtotalPrice.innerHTML = '$' + thisCart.subtotalPrice;
 			thisCart.dom.deliveryFee.innerHTML = '$' + deliveryFee;
 
