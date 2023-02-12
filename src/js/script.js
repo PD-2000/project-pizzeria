@@ -549,14 +549,10 @@
 					return rawResponse.json();
 				})
 				.then(function(parsedResponse){
-					console.log('parsedResponse', parsedResponse);
+					thisApp.data.products = parsedResponse;
 
-					// save parsedResponse as thisApp.data.products
-
-					// execute initMenu method
+					thisApp.initMenu();
 				});
-
-			console.log('thisApp.data', JSON.stringify(thisApp.data));
 		},
 		initCart: function(){
 			const thisApp = this;
