@@ -92,17 +92,10 @@ class Product{
 	}
 	addToCart(){
 		const thisProduct = this;
-
-		// testV
-		// thisProduct.name = thisProduct.data.name;
-		// thisProduct.amount = thisProduct.amountWidget.value;
-
-		//app.cart.add(thisProduct.prepareCartProduct());
-
 		const event = new CustomEvent('add-to-cart', {
 			bubbles: true,
 			detail: {
-				product: thisProduct,
+				product: thisProduct.prepareCartProduct(),
 			}
 		});
 
