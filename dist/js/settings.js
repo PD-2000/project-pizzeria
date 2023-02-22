@@ -77,7 +77,8 @@ export const classNames = {
 	},
 	booking: {
 		loading: 'loading',
-		tableBooked: 'booked'
+		tableBooked: 'booked',
+		tableSelected: 'selected'
 	},
 	nav: {
 		active: 'active'

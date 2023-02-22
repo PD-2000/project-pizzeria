@@ -95,7 +95,6 @@ const app = {
 
 		thisApp.initPages();
 		thisApp.initData();
-		thisApp.initMenu();
 		thisApp.initCart();
 		thisApp.initBooking();
 	}
