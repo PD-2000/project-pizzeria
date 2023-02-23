@@ -11,6 +11,7 @@ class Booking{
 		thisBooking.render(element);
 		thisBooking.initWidgets();
 		thisBooking.getData();
+		thisBooking.initTables();
 	}
 	getData(){
 		const thisBooking = this;
@@ -130,11 +131,41 @@ class Booking{
 
 		thisBooking.dom = {};
 		thisBooking.dom.wrapper = element;
-		thisBooking.dom.peopleAmount = element.querySelector(select.booking.peopleAmount);
-		thisBooking.dom.hoursAmount = element.querySelector(select.booking.hoursAmount);
+		thisBooking.dom.address = element.querySelector(select.booking.address);
 		thisBooking.dom.datePicker = element.querySelector(select.widgets.datePicker.wrapper);
+		thisBooking.dom.duration = element.querySelector(select.booking.duration);
+		thisBooking.dom.floor = element.querySelector(select.booking.floor);
+		thisBooking.dom.hoursAmount = element.querySelector(select.booking.hoursAmount);
 		thisBooking.dom.hourPicker = element.querySelector(select.widgets.hourPicker.wrapper);
+		thisBooking.dom.people = element.querySelector(select.booking.people);
+		thisBooking.dom.peopleAmount = element.querySelector(select.booking.peopleAmount);
+		thisBooking.dom.phone = element.querySelector(select.booking.phone);
+		thisBooking.dom.submit = element.querySelector(select.booking.submit);
+		thisBooking.dom.starters = element.querySelector(select.booking.starters);
 		thisBooking.dom.tables = element.querySelectorAll(select.booking.tables);
+	}
+	initTables(){
+		const thisBooking = this;
+
+		thisBooking.dom.floor.addEventListener('click', function(event){
+			event.preventDefault();
+
+			if(event.target.classList.contains('table')){
+				if(!event.target.classList.contains(classNames.booking.tableBooked)){
+					for(let table of thisBooking.dom.tables){
+						if (table.classList.contains(classNames.booking.tableSelected) && table !== event.target)
+							table.classList.remove(classNames.booking.tableSelected);
+						
+						if(event.target.classList.contains(classNames.booking.tableSelected))
+							event.target.classList.remove(classNames.booking.tableSelected);
+						else
+							event.target.classList.add(classNames.booking.tableSelected);
+					}
+				}
+				else
+					alert('The following table is already booked. Try another one.');
+			}
+		});
 	}
 	initWidgets(){
 		const thisBooking = this;
@@ -156,9 +187,61 @@ class Booking{
 		thisBooking.dom.hourPicker.addEventListener('updated', function(){
 			thisBooking.element = thisBooking.hourPicker;
 		});
-		thisBooking.dom.hourPicker.addEventListener('updated', function(){
+		thisBooking.dom.wrapper.addEventListener('updated', function(event){
 			thisBooking.updateDOM();
+
+			if(event.target == thisBooking.dom.hourPicker || event.target == thisBooking.dom.datePicker
+			|| event.target == thisBooking.dom.peopleAmount || event.target == thisBooking.dom.hoursAmount){
+				thisBooking.selectedTable = {};
+
+				for(let table of thisBooking.dom.tables)
+					table.classList.remove('selected');
+			}
 		});
+		thisBooking.dom.submit.addEventListener('click', function(event){
+			event.preventDefault();
+			thisBooking.sendBooking();
+		});
+		thisBooking.dom.starters.addEventListener('click', function(event){
+			const starter = event.target;
+			if(thisBooking.tagName == 'INPUT' && thisBooking.type == 'checkbox' && thisBooking.name == 'starter'){
+				if(starter.checked)
+					thisBooking.starters.push(starter.value);
+				else
+					thisBooking.starters.pop(starter.value);
+			}
+		});
+	}
+	sendBooking(){
+		const thisBooking = this;
+		const payload = {
+			adress: thisBooking.dom.address.value,
+			date: thisBooking.date,
+			duration: thisBooking.hoursAmount.value,
+			hour: utils.numberToHour(thisBooking.hour),
+			phone: thisBooking.dom.phone.value,
+			ppl: thisBooking.peopleAmount.value,
+			starters: [],
+			table: thisBooking.tableId
+		};
+		const url = settings.db.url + '/' + settings.db.bookings;
+		const options = {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(payload),
+		};
+
+		for(let starter of thisBooking.dom.starters){
+			if(starter.checked)
+				payload.starters.push(starter.value);
+		}
+		
+		fetch(url, options)
+			.then(function(response){
+				return response.json();
+			});
 	}
 }
 

@@ -170,7 +170,6 @@
 		}
 
 		&.selected {
-			cursor: not-allowed;
 			color: lighten($color-dark, 40%);
 	
 			&::after {
@@ -180,8 +179,7 @@
 				height: 100%;
 				left: 0;
 				top: 0;
-				background: red;
-				border: 5px, solid, purple;
+				background: rgb(16, 203, 16);
 				opacity: 0.4;
 			}
 		}
