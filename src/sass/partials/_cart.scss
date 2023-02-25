@@ -1,3 +1,7 @@
+*, *::before, *::after {
+	transition: $transition;
+}
+
 .cart {
 	position: absolute;
 	width: 300px;

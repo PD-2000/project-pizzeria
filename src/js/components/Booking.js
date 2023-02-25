@@ -175,18 +175,6 @@ class Booking{
 		thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
 		thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
-		thisBooking.dom.peopleAmount.addEventListener('updated', function(){
-			thisBooking.amount = thisBooking.amountWidget;
-		});
-		thisBooking.dom.hoursAmount.addEventListener('updated', function(){
-			thisBooking.amount = thisBooking.amountWidget;
-		});
-		thisBooking.dom.datePicker.addEventListener('updated', function(){
-			thisBooking.element = thisBooking.datePicker;
-		});
-		thisBooking.dom.hourPicker.addEventListener('updated', function(){
-			thisBooking.element = thisBooking.hourPicker;
-		});
 		thisBooking.dom.wrapper.addEventListener('updated', function(event){
 			thisBooking.updateDOM();
 
@@ -198,19 +186,22 @@ class Booking{
 					table.classList.remove('selected');
 			}
 		});
+		thisBooking.dom.floor.addEventListener('click', function(event){
+			thisBooking.initTables(event);
+		});
 		thisBooking.dom.submit.addEventListener('click', function(event){
 			event.preventDefault();
 			thisBooking.sendBooking();
 		});
-		thisBooking.dom.wrapper.addEventListener('click', function(event){
-			const element = event.target;
-			if(element.tagName == 'INPUT' && element.type == 'checkbox' && element.name == 'starter'){
-				if(element.checked)
-					thisBooking.starters.push(element.value);
-				else
-					thisBooking.starters.splice(thisBooking.starters.indexOf(element.value), 1);
-			}
-		});
+		// thisBooking.dom.wrapper.addEventListener('click', function(event){
+		// 	const element = event.target;
+		// 	if(element.tagName == 'INPUT' && element.type == 'checkbox' && element.name == 'starter'){
+		// 		if(element.checked)
+		// 			thisBooking.starters.push(element.value);
+		// 		else
+		// 			thisBooking.starters.splice(thisBooking.starters.indexOf(element.value), 1);
+		// 	}
+		// });
 	}
 	sendBooking(){
 		const thisBooking = this;
@@ -222,7 +213,7 @@ class Booking{
 			phone: thisBooking.dom.phone.value,
 			ppl: thisBooking.peopleAmount.value,
 			starters: [],
-			table: thisBooking.tableId
+			table: parseInt(thisBooking.tableId)
 		};
 		const url = settings.db.url + '/' + settings.db.bookings;
 		const options = {
@@ -241,6 +232,16 @@ class Booking{
 		fetch(url, options)
 			.then(function(response){
 				return response.json();
+			})
+			.then(function(parsedResponse){
+				console.log('parsedResponse', parsedResponse);
+				thisBooking.makeBooked(
+					parsedResponse.date, 
+					parsedResponse.hour, 
+					parsedResponse.duration,
+					parsedResponse.table
+				);
+				thisBooking.updateDOM();
 			});
 	}
 }

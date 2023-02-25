@@ -265,12 +265,13 @@
   "bookings": [
     {
       "adress": "",
-      "date": "2023-02-23",
+      "date": "2023-02-25",
       "duration": 1,
       "hour": "12:00",
       "phone": "",
       "ppl": 1,
       "starters": [],
+      "table": null,
       "id": 1
     }
   ]
